@@ -1,0 +1,64 @@
+<!doctype html>
+<title>style.left 轮播图</title>
+<meta charset="utf-8">
+<style>
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#banner{
+		width:640px;
+		height:480px;
+		border:2px solid cyan;
+		margin:0 auto;
+		margin-top:20px;
+		position:relative;
+		overflow:hidden;
+		box-shadow:0 0 10px;
+
+	}
+	#bannerRun{
+		width:1000%;
+	}
+	#bannerRun li{
+		float:left;
+		width:640px;
+		height:480px;
+	}
+	#banner img{
+		height:100%;
+	}
+	#banner img:first-child{
+		width:100%;
+	}
+</style>
+<div id="banner">
+	<ul id="bannerRun" style="position:absolute;left:0;">
+		<li><img src="img/1.jpg" alt=""></li>
+		<li><img src="img/2.jpg" alt=""></li>
+		<li><img src="img/3.jpg" alt=""></li>
+		<li><img src="img/4.jpg" alt=""></li>
+		<li><img src="img/1.jpg" alt=""></li>
+	</ul>
+</div>
+<script>
+	var bannerRun=document.getElementById('bannerRun');
+	console.log(bannerRun);
+	console.log(bannerRun.style.left);
+	var speet=20;
+	function pao(){
+		var running=setInterval(function(){
+				bannerRun.style.left=parseInt(bannerRun.style.left)-speet+'px';
+				if(bannerRun.style.left=='-2560px'){
+					bannerRun.style.left=0+'px';
+				}
+				if(parseInt(bannerRun.style.left)%640==0){
+					clearInterval(running);
+					setTimeout(pao,1000)
+				}
+			},20
+		)
+	}
+	setTimeout('pao()',1000)
+</script>
