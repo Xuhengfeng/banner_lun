@@ -1,0 +1,132 @@
+<!doctype html>
+<title>放大镜</title>
+<meta charset="utf-8">
+<style>
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#sm{
+		width:250px;
+		height:250px;
+		background:red;
+		position:relative;
+		top:50px;
+		left:50px;
+	}
+	#sm img{
+		width:100%;
+	}
+	#sm-son{
+		width:62.5px;
+		height:62.5px;
+		background:rgba(255,255,255,.3);
+		position:absolute;
+		top:0;
+		left:0;
+		display:none;
+	}
+	#big{
+		width:250px;
+		height:250px;
+		position:absolute;
+		left:310px;
+		top:50px;
+		overflow:hidden;
+		display:none;
+	}
+	#big img{
+		position:absolute;
+	}
+	#pic-List{
+		width:250px;
+		position:absolute;
+		left:50px;
+		margin-top:60px;
+		/*margin-top:10px;*/
+	}
+	#pic-List ul li{
+		width:25%;
+		float:left;
+	}
+	#pic-List ul img{
+		width:100%;
+	}
+	hr{
+		margin-top:150px;
+		margin-left:50px;
+		margin-right:50px;
+	}
+</style>
+<div id="sm">
+	<img src="image/1.jpg" alt="">
+	<div id="sm-son"></div>
+</div>
+<div id="big">
+	<img src="image/1.jpg" alt="">
+</div>
+<div id="pic-List">
+	<ul id="item">
+		<li><img src="image/1.jpg" alt=""></li>
+		<li><img src="image/2.jpg" alt=""></li>
+		<li><img src="image/3.jpg" alt=""></li>
+		<li><img src="image/4.jpg" alt=""></li>
+	</ul>
+</div>
+<hr>
+<script>
+	var sm=document.getElementById('sm');
+	var smSon=document.getElementById('sm-son')
+	var big=document.getElementById('big');
+	var bigPic=document.getElementById('big').firstElementChild;
+	var itemPic=document.getElementById('item') .getElementsByTagName('li');
+	console.log(itemPic);
+	console.log(bigPic);
+	sm.onmousemove=function(evt){
+		big.style.display='block';
+		var e=evt||event;
+		var x=e.pageX-sm.offsetLeft;
+		var y=e.pageY-sm.offsetTop;
+		var w=smSon.offsetWidth/2;
+		var h=smSon.offsetHeight/2;
+		var y=y-h;
+		var x=x-w;
+		console.log(x+'----'+y);
+		// 边界判断
+		if(x<=0){
+			x=0;
+		}
+		if(x>=sm.offsetWidth-smSon.offsetWidth){
+			x=sm.offsetWidth-smSon.offsetWidth;
+		}
+		if(y<=0){
+			y=0;
+		}
+		if(y>=sm.offsetHeight-smSon.offsetHeight){
+			y=sm.offsetHeight-smSon.offsetHeight;
+		}
+		smSon.style.display='block';
+		smSon.style.left=x+'px';
+		smSon.style.top=y+'px';
+		// 移动比例
+		var bLeft=(x/sm.offsetWidth)*big.firstElementChild.offsetWidth;
+		var bTop=(y/sm.offsetHeight)*big.firstElementChild.offsetHeight;
+		console.log(bLeft+'----'+bTop)
+		bigPic.style.left=-bLeft+'px';
+		bigPic.style.top=-bTop+'px';
+	}
+	sm.onmouseout=function(){
+		smSon.style.display='none';
+		big.style.display='none';
+	}
+	for(var i=0;i<itemPic.length;i++){
+		console.log(1);
+		itemPic[i].onmouseover=function(){
+			console.log(itemPic[i]);
+			sm.firstElementChild.src=this.firstElementChild.src;
+			bigPic.src=this.firstElementChild.src;
+		}
+	}
+	
+</script>

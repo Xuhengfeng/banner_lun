@@ -1,0 +1,165 @@
+<!doctype html>
+<title>放大镜</title>
+<meta charset="utf-8">
+<style>
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#small{
+		width:400px;
+		height:400px;
+		border:1px solid #ccc;
+		position:absolute;
+		top:50px;
+		left:50px;
+		background:red;
+	}
+	#small img{
+		width:100%;
+	}
+	#move{
+		width:160px;
+		height:160px;
+		border:1px solid yellow;
+		background:yellow;
+		opacity:.3;
+		position:absolute;
+		left:0;
+		top:0;	
+		display:none;
+	}
+	#big{
+		width:400px;
+		height:400px;
+		/*border:1px solid cyan;*/
+		position:absolute;
+		left:460px;
+		top:50px;
+		display:none;
+		overflow:hidden;
+
+	}
+	#big img{
+		position:absolute;
+	}
+	#dian{
+		width:400px;
+		height:100px;
+		/*border:1px solid #ccc;*/
+		
+		position:absolute;
+		bottom:0px;
+		left:50px;
+	}
+	#dian ul{
+		width:400px;
+		height:100px;
+		position:relative;
+		z-index:1;
+	}
+	#dian ul img{
+		width:100px;
+		position:relative;
+		z-index:-1;	
+		opacity:0.8;
+	}
+	#dian ul li{
+		float:left;
+		/*padding-right:1px;*/
+	}
+	#main{
+		height:400px;
+		position:relative;
+		overflow:hidden;
+	}
+</style>
+<!-- 先做小图 -->
+<div id="main">
+<div id="small">
+	<img src="image/1.jpg" id="small_pic" alt="">
+	<div id="move"></div>
+</div>
+<!-- 右边的大图 -->
+<div id="big"><img src="image/1.jpg" id="bigPic" alt=""></div>
+<div id="dian">
+	<ul>
+		<li><img src="image/1.jpg" alt=""></li>
+		<li><img src="image/2.jpg" alt=""></li>
+		<li><img src="image/3.jpg" alt=""></li>
+		<li><img src="image/4.jpg" alt=""></li>
+	</ul>
+</div>
+</div>
+<script>
+	var small=document.getElementById('small');
+	var small_pic=document.getElementById('small_pic');
+	console.log(small_pic)
+	// console.log(small)
+	var move=document.getElementById('move');
+	var big=document.getElementById('big');
+	var bigPic=document.getElementById('bigPic');
+	var dian=document.getElementById('dian');
+	var lis=dian.getElementsByTagName('ul')[0].getElementsByTagName('li');
+	console.log(lis)
+	// small 鼠标移入事件
+	small.onmousemove=function(ent){
+		move.style.display='block';
+		var e=ent||event;
+		// 获取鼠标在视窗的位置
+		var x=e.pageX;
+		var y=e.pageY;
+		// console.log('x:'+x+'---'+'y:'+y);
+		// small这个元素距离父元素的top和left值;
+		var sl=small.offsetLeft;
+		var st=small.offsetTop;
+		console.log(sl+'---'+st);
+		//根据鼠标位置计算出居中效果的move盒子框
+		// 距离small的左上角的left和top值
+		var x=x-sl-move.offsetWidth/2;
+		var y=y-sl-move.offsetHeight/2;
+		// 边界判断
+		// 左边
+		if(x<=0){
+		   x=0;
+		}
+		//右边
+		if(x>=small.offsetWidth-move.offsetWidth){
+			x=small.offsetWidth-move.offsetWidth
+		}
+		//上边
+		if(y<=0){
+			y=0;
+		}
+		//下边
+		if(y>=small.offsetHeight-move.offsetHeight){
+			y=small.offsetHeight-move.offsetHeight
+		}
+		move.style.left=x+'px';
+		move.style.top=y+'px';
+		big.style.display='block';
+		var bLeft=bigPic.offsetWidth*(x/small.offsetWidth);
+		var bTop=bigPic.offsetHeight*(y/small.offsetHeight);
+		bigPic.style.left=-bLeft+'px';
+		bigPic.style.top=-bTop+'px';
+		bigPic.src=small_pic.src;
+
+	}
+	//small 鼠标移出事件
+	small.onmouseout=function(){
+		move.style.display='none';
+		big.style.display='none';
+	}
+
+	for(var i=0;i<lis.length;i++){
+		lis[i].onmouseover=function(){
+			small_pic.src=this.firstElementChild.src;
+			this.style.background="rgba(0,0,0,.5)";
+		}
+		lis[i].onmouseout=function(){
+			this.style.background='';
+		}
+	}
+
+</script>

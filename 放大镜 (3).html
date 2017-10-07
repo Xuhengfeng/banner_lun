@@ -1,0 +1,131 @@
+<!doctype html>
+<title>放大镜</title>
+<meta charset="utf-8">
+<style>
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#small-box{
+		width:418px;
+		height:418px;
+		margin-top:50px;
+		margin-left:50px;
+		position:relative;
+	}
+	#small-box img{
+		width:100%;
+	}
+	#move-box{
+		width:175px;
+		height:175px;
+		background:white;
+		position:absolute;
+		top:0;
+		left:0;
+		opacity:.2;
+		display:none;
+	}
+	#big-Box{
+		width:418px;
+		height:418px;
+		position:absolute;
+		left:478px;
+		top:50px;
+		display:none;
+		overflow:hidden;
+	}
+	#big-Box img{
+		position:absolute;
+	}
+	#dian{
+		width:418px;
+		height:100px;
+		position:relative;
+		left:50px;
+		top:10px;
+		z-index:1;
+	}
+	#dian ul li{
+		float:left;
+		width:25%;
+		font-size:0;
+	}
+	#dian ul img{
+		width:100%;
+		position:relative;
+		z-index:-1
+	}
+</style>
+<div id="small-box">
+	<img src="image/1.jpg" alt="图片">
+	<div id="move-box"></div>
+</div>
+<div id="big-Box"><img src="image/1.jpg" alt=""></div>
+<div id="dian">
+	<ul>
+		<li><img src="image/1.jpg" alt=""></li>
+		<li><img src="image/2.jpg" alt=""></li>
+		<li><img src="image/3.jpg" alt=""></li>
+		<li><img src="image/4.jpg" alt=""></li>	
+	</ul>
+</div>
+<script>
+	var smallBox=document.getElementById('small-box')
+	var moveBox=document.getElementById('move-box')
+	var bigBox=document.getElementById('big-Box');
+	var bigPic=document.getElementById('big-Box').firstElementChild;
+	var dianPic=document.getElementById('dian').firstElementChild.getElementsByTagName('li')
+	smallBox.onmousemove=function(evt){
+		moveBox.style.display='block';
+		bigBox.style.display='block';
+		var e=evt||event;
+		//鼠标坐标
+		var x=e.pageX;
+		var y=e.pageY;
+		var	x=x-smallBox.offsetLeft;
+		var	y=y-smallBox.offsetTop;
+		var	x=x-moveBox.offsetWidth/2;
+		var	y=y-moveBox.offsetHeight/2;
+		// 判断边界
+		//左边
+		if(x<=0){
+			x=0;
+		}
+		//右边
+		if(x>=smallBox.offsetWidth-moveBox.offsetHeight){
+			x=smallBox.offsetWidth-moveBox.offsetHeight;
+		}
+		//上边
+		if(y<=0){
+			y=0;
+		}
+		//下边
+		if(y>=smallBox.offsetHeight-moveBox.offsetHeight){
+			y=smallBox.offsetHeight-moveBox.offsetHeight;
+		}
+		moveBox.style.left=x+'px';
+		moveBox.style.top=y+'px';
+		// 大图的移动
+		var bLeft=(x/smallBox.offsetWidth)*bigPic.offsetWidth;
+		var bTop=(y/smallBox.offsetHeight)*bigPic.offsetHeight;
+		console.log(bLeft+'---'+bTop)
+		bigPic.style.left=-bLeft+'px';
+		bigPic.style.top=-bTop+'px';
+	}	
+	smallBox.onmouseout=function(){
+		moveBox.style.display='none';
+		bigBox.style.display='none';
+	}
+	for(var i=0;i<dianPic.length;i++){
+		dianPic[i].onmouseover=function(){
+			this.style.background='rgba(0,0,0,.5)';
+			smallBox.firstElementChild.src=this.firstElementChild.src;
+			bigBox.firstElementChild.src=this.firstElementChild.src;
+		}
+		dianPic[i].onmouseout=function(){
+			this.style.background='';
+		}
+	}
+</script>

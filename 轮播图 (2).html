@@ -1,0 +1,308 @@
+<!doctype html>
+<title>轮播图</title>
+<meta charset="utf-8">
+<style>
+	/*重置样式*/
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+
+
+	/*头部样式*/
+	header{
+		width:100%;
+		height:100px;
+		background:yellow;
+		overflow:hidden;
+		margin-bottom:10px;
+	}
+	#son1{
+		height:100%;
+		width:5px;
+		background:rgba(0,0,0,1);
+		float:left;
+
+	}
+	#son1 p{
+		width:100px;
+		/*height:100%;*/
+		float:right;
+		margin-right:100px;
+		font-size:25px;
+		color:white;
+		line-height:30px;
+	}
+	#son1_1{
+		width:0;
+		height:0;
+		border-style:solid;
+		border-width:30px;
+		border-color:transparent transparent transparent rgba(0,0,0,1);
+		float:left;
+		margin-left:-20px;
+		margin-top:17px;
+	}
+
+	/*焦点图*/
+	#banner{
+		width:60%;
+		margin-right:10px;
+		/*background:pink;*/
+		float:left;
+		position:relative;
+		margin-bottom:10px;
+	}
+	@media screen and (max-width:800px){
+		#banner{
+			width:100%;
+		}
+	}
+	#banner #item1 .item1_pic{
+		display:block;	
+	}
+	#banner #item1  li{
+		display:none;	
+	}
+	#banner #item1  li img{
+		width:100%;
+	}
+	#banner #num1{
+
+		position:absolute;
+		bottom:20px;
+		left:260px;
+	}
+	@media screen and (max-width:800px){
+		#banner #num1{
+		left:50px;
+	}
+	}
+	#banner #num1 li{
+		float:left;
+	}
+	#num1 li span{
+		display:block;
+		width:30px;
+		height:30px;
+		background:rgba(0,0,0,.4);
+		color:white;
+		text-align:center;
+		line-height:30px;
+		border-radius:50%;
+		margin-right:10px;
+	}
+	#num1 li #num1_bg{
+		background:red;
+	}
+	#right,#left{
+		width:30px;
+		background:rgba(255,0,0,.5);
+		position:absolute;
+		color:white;
+		line-height:80px;
+		top:200px;
+		text-align:center;
+		font-size:25px;
+		display:none;
+	}
+	@media screen and (max-width:800px){
+		#right,#left{
+		top:80px;	
+		}
+	}
+	#left{
+		left:0;
+	}
+	#right{
+		right:0;
+	}
+
+
+	/*侧边栏*/
+	#sidebar{
+		width:529px;
+		height:503.36px;
+		background:red;
+		float:left;
+	}
+	@media screen and (max-width:800px){
+		#sidebar{
+			width:100%;
+		}
+	}
+
+	/*脚部样式*/
+	.footer{
+		width:100%;
+		height:300px;
+		background:yellow;
+		clear:both;
+	}
+
+</style>
+<header>
+	<div id="son1"><p>好消息</p></div>
+	<div id="son1_1"></div>
+</header>
+<div id="banner">
+	<ul id="item1">
+		<li class="item1_pic"><img src="imgs/1.jpg" alt=""></li>
+		<li><img src="imgs/2.jpg" alt=""></li>
+		<li><img src="imgs/3.jpg" alt=""></li>
+		<li><img src="imgs/4.jpg" alt=""></li>
+		<li><img src="imgs/5.jpg" alt=""></li>
+		<li><img src="imgs/6.jpg" alt=""></li>
+	</ul>
+	<ul id="num1">
+		<li><span id="num1_bg">1</span></li>
+		<li><span>2</span></li>
+		<li><span>3</span></li>
+		<li><span>4</span></li>
+		<li><span>5</span></li>
+		<li><span>6</span></li>
+	</ul>
+	<div id="left"><</div>
+	<div id="right">></div>
+</div>
+<div id="sidebar"></div>
+<div class="footer"></div>
+<script>
+
+
+	// 头部
+	var	son1=document.getElementById('son1');
+	var	son1_1=document.getElementById('son1_1');
+		son1.onmouseover=function(){
+			son1.style.background='white';
+			son1.style.width='100%';
+			son1.style.transition='all 2s ease-in';
+			son1_1.style.borderColor='transparent transparent transparent white';
+			son1_1.style.transition='all 2s ease-in'
+		}
+		son1.onmouseout=function(){
+			son1.style.background='red';
+			son1.style.width='5px';
+			son1.style.transition='all 2s ease-in';
+			son1_1.style.borderColor='transparent transparent transparent red';
+			son1_1.style.transition='all 2s ease-in'
+		}
+
+
+	// 焦点图
+	var item1=document.getElementById('item1')
+	var item1_lis=item1.getElementsByTagName('li');
+	var num1=document.getElementById('num1');
+	var num1_lis=num1.getElementsByTagName('li');
+	var left_btn=document.getElementById('left');
+	var right_btn=document.getElementById('right');
+
+
+	// i定义图片下标
+	var i=0;
+	function autoPlay(){
+		run=setInterval(function(){
+			item1_lis[i].removeAttribute('class');
+			num1_lis[i].firstElementChild.removeAttribute('id');
+			i++;
+			if(i==item1_lis.length){
+				i=0;
+			}
+			// console.log(i);
+			item1_lis[i].className='item1_pic';
+			num1_lis[i].firstElementChild.setAttribute('id','num1_bg');
+		},1000)
+	}
+	autoPlay();
+	console.log(i);
+
+
+	//每张图片的滑入滑出事件
+	for(var j=0;j<item1_lis.length;j++){
+		item1_lis[j].onmouseover=function(){
+			clearInterval(run);
+			left.style.display='block';
+			right.style.display='block';
+
+		}
+		item1_lis[j].onmouseout=function(){
+			autoPlay();
+			left.style.display='none';
+			right.style.display='none';
+		}
+	}
+	console.log(j);
+
+
+	//数字的滑入滑出事件
+	for(var k=0;k<item1_lis.length;k++){
+		num1_lis[k].firstElementChild.setAttribute('num',k);
+		num1_lis[k].onmouseover=function(){
+			clearInterval(run);
+			item1_lis[i].className='';
+			num1_lis[i].firstElementChild.removeAttribute('id');
+			i=this.firstElementChild.getAttribute('num');
+			item1_lis[i].className='item1_pic';
+			num1_lis[i].firstElementChild.setAttribute('id','num1_bg');
+		}
+	}
+	console.log(i);
+
+
+	// 右箭头 滑入滑出事件
+	right_btn.onmouseover=function(){
+		clearInterval(run);
+		left_btn.style.display='block';
+		right_btn.style.display='block';
+	}
+	right_btn.onmouseout=function(){
+		autoPlay();
+		left_btn.style.display='none';
+		right_btn.style.display='none';
+	}
+
+
+	//右箭头 点击事件
+	right_btn.onclick=function(){
+		item1_lis[i].removeAttribute('class');
+		num1_lis[i].firstElementChild.removeAttribute('id');
+		i++;
+		if(i==item1_lis.length){
+			i=0;
+		}
+		console.log(i);
+		item1_lis[i].className='item1_pic';
+		num1_lis[i].firstElementChild.setAttribute('id','num1_bg');
+	}
+
+
+	// 左箭头 滑入滑出事件
+	left_btn.onmouseover=function(){
+		clearInterval(run);
+		left_btn.style.display='block';
+		right_btn.style.display='block';
+	}
+	left_btn.onmouseout=function(){
+		autoPlay();
+		left_btn.style.display='none';
+		right_btn.style.display='none';
+	}
+
+
+	//左箭头 点击事件
+	left_btn.onclick=function(){
+		item1_lis[i].className='';
+		num1_lis[i].firstElementChild.removeAttribute('id')
+		i--;
+		if(i<0){
+			i=5;
+		}
+		item1_lis[i].setAttribute('class','item1_pic');
+		num1_lis[i].firstElementChild.setAttribute('id','num1_bg')
+	}
+	
+
+
+
+</script>

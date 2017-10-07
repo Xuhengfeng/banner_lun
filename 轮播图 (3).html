@@ -1,0 +1,189 @@
+<!doctype html>
+<title>轮播图</title>
+<meta charset="utf-8">
+<style>
+	*{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#lun{
+		width:730px;
+		height:454px;
+		border:1px solid red;
+		margin:0 auto;
+		margin-top:20px;
+		position:relative;
+	}
+	#img li{
+	   	display:none;
+	}
+	#img .active{
+		display:block;
+	}	
+	#num{
+		/*width:300px;*/
+		background:rgba(255,255,255,.5);
+		position:absolute;
+		bottom:20px;
+		margin-left:220px;
+		border-radius:15px;
+	}
+	#num li{
+		float:left;
+	}
+	#num li span{
+		display:inline-block;
+		width:30px;
+		height:30px;
+		color:#fff;
+		line-height:30px;
+		background:rgba(0,0,0,.5);
+		border-radius:50%;
+		text-align:center;
+		margin-left:15px;
+	}
+	#num li:nth-child(1) span{
+		margin-left:0;
+	}
+	#num li .active_num{
+		background:#6699ff;
+	}
+	#left,#right{
+		width:25px;
+		height:70px;
+		background:rgba(0,0,0,.5);
+		line-height:70px;
+		color:white;
+		text-align:center;
+		position:absolute;
+	}
+	#left{
+		left:0;
+		top:180px;
+	}
+	#right{
+		right:0;
+		top:180px;
+	}
+</style>
+<div id="lun">
+	<ul id="img">
+		<li class="active"><a href="http://www.baidu.com"><img src="imgs/1.jpg" alt=""></a></li>
+		<li><a href="http://www.taobao.com"><img src="imgs/2.jpg" alt=""></a></li>
+		<li><img src="imgs/3.jpg" alt=""></li>
+		<li><img src="imgs/4.jpg" alt=""></li>
+		<li><img src="imgs/5.jpg" alt=""></li>
+		<li><img src="imgs/6.jpg" alt=""></li>
+	</ul>
+	<ul id="num">
+		<li><span class="active_num">1</span></li>
+		<li><span>2</span></li>
+		<li><span>3</span></li>
+		<li><span>4</span></li>
+		<li><span>5</span></li>
+		<li><span>6</span></li>
+	</ul>
+	<div id="left"><</div>
+	<div id="right">></div>
+</div>
+<script>
+	var lis=document.getElementById('img').getElementsByTagName('li');
+	// console.log(lis);
+	var num=document.getElementById('num');
+	var num_lis=document.getElementById('num').getElementsByTagName('li');
+	var i=0;
+	function autoRun(){
+		run=setInterval(function(){
+			lis[i].removeAttribute('class');
+			num_lis[i].firstElementChild.removeAttribute('class');
+			i++;
+			if(i==lis.length){
+				i=0;
+			}
+			lis[i].setAttribute('class','active');
+			lis[i].style.transition='all'+' '+'9s';
+			num_lis[i].firstElementChild.setAttribute('class','active_num')
+		},1000)	
+	}
+	autoRun();
+	for(var j=0;j<lis.length;j++){
+		lis[j].onmouseover=function(){
+			clearInterval(run);
+			left.style.display='block';
+			right.style.display='block';
+		}
+		lis[j].onmouseout=function(){
+			autoRun();
+			left.style.display='none';
+			right.style.display='none';
+		}
+	}
+	//给ul 鼠标移入移出事件
+	// num.onmouseover=function(){
+	// 	//停止播放
+	// 	clearInterval(run);
+	// }
+	// //移出继续执行
+	// num.onmouseout=function(){
+	// 	//先清除li调用 
+	// 	clearInterval(run);
+	// 	//在去调用
+	// 	autoRun();
+	// }
+	// 数字移入事件和移出事件
+	for(var k=0;k<num_lis.length;k++){
+		num_lis[k].firstElementChild.setAttribute('num',k);
+		num_lis[k].onmouseover=function(){
+			clearInterval(run);
+			lis[i].className='';
+			num_lis[i].firstElementChild.className='';
+			i=this.firstElementChild.getAttribute('num');
+			lis[i].className='active';
+			num_lis[i].firstElementChild.className='active_num';
+		}
+		num_lis[k].onmouseout=function(){
+				autoRun();
+			}
+	}
+	right.onmouseover=function(){
+		left.style.display='block';
+		right.style.display='block';
+		clearInterval(run);
+	}
+	right.onmouseout=function(){
+		left.style.display='none';
+		right.style.display='none';
+		autoRun();
+	}
+	right.onclick=function(){
+		lis[i].className='';
+		num_lis[i].firstElementChild.className='';
+		i++;
+		if(i==lis.length){
+			i=0;
+		}
+		lis[i].className='active';
+		num_lis[i].firstElementChild.className='active_num';
+	}
+	left.onmouseover=function(){
+		left.style.display='block';
+		right.style.display='block';
+		clearInterval(run);
+	}
+	left.onmouseout=function(){
+		left.style.display='none';
+		right.style.display='none';
+		autoRun();
+	}
+	left.onclick=function(){
+		lis[i].className='';
+		num_lis[i].firstElementChild.className='';
+		i--;
+		if(i<0){
+			i=lis.length-1;
+		}
+		lis[i].className='active';
+		num_lis[i].firstElementChild.className='active_num';
+	}
+</script>

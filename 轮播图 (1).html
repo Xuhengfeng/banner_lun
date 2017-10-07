@@ -1,0 +1,235 @@
+<!doctype html>
+<title>轮播图</title>
+<meta charset="utf-8">
+<style>
+	*{
+		padding:0;
+		margin:0;
+		list-style:none;
+	}
+	#header{
+		width:100%;
+		height:100px;
+		background:yellow;
+		margin-bottom:10px;
+	}
+	#bannerRun{
+		width:730px;
+		height:454px;
+		background:green;
+		margin:0 auto;
+		position:relative;
+		/*overflow:hidden;*/
+	}
+	#bannerRun #pic li{
+		display:none;
+	}
+	#bannerRun #pic .item{
+		display:block;
+	}
+	#rt-bar,#Lt-bar{
+		width:298px;
+		height:454px;
+		background:red;
+	}
+	#rt-bar{
+		float:left;
+	}
+	#Lt-bar{
+		float:right;
+	}
+	#footer{
+		width:100%;
+		height:300px;
+		background:yellow;
+		margin-top:10px;
+	}
+	#num{
+		background:rgba(0,0,0,.2);
+		position:absolute;
+		bottom:10px;
+		left:250px;
+		-webkit-border-top-left-radius:15px 50%;
+		-webkit-border-top-right-radius:15px 50%;
+		-webkit-border-bottom-left-radius:15px 50%;
+		-webkit-border-bottom-right-radius:15px 50%;
+
+	}
+	#num .num1 span{
+		background:rgba(0,0,0,.5);
+	}
+	#num li{
+		float:left;
+		/*width:calc(100%/6);*/
+
+	}
+	#num li span{
+		display:block;
+		width:30px;
+		height:30px;
+		margin-right:10px;
+		line-height:30px;
+		font-size:15px;
+		color:white;
+		text-align:center;
+		-webkit-border-radius:50%;
+	}
+	#num li:last-child span{
+		margin-right:0;
+	}
+	#right,#left{
+		width:30px;
+		background:rgba(0,0,0,.5);
+		text-align:center;
+		line-height:80px;
+		color:white;
+		font-weight:bold;
+		font-family:'微软雅黑';
+		font-size:25px;
+		position:absolute;
+		top:180px;
+		display:none;
+	}
+	#right{
+		right:0;
+	}
+</style>
+<div id="header">
+</div>
+<div id="rt-bar"></div>
+<div id="Lt-bar"></div>
+<div id="bannerRun">
+	<ul id="pic">
+		<li class="item"><img src="imgs/1.jpg" alt=""></li>
+		<li><img src="imgs/2.jpg" alt=""></li>
+		<li><img src="imgs/3.jpg" alt=""></li>
+		<li><img src="imgs/4.jpg" alt=""></li>
+		<li><img src="imgs/5.jpg" alt=""></li>
+		<li><img src="imgs/6.jpg" alt=""></li>
+	</ul>
+	<ul id="num">
+		<li class="num1"><span>1</span></li>
+		<li><span>2</span></li>
+		<li><span>3</span></li>
+		<li><span>4</span></li>
+		<li><span>5</span></li>
+		<li><span>6</span></li>
+	</ul>
+	<div id="left"><</div>
+	<div id="right">></div>
+</div>
+
+<div id="footer">
+
+</div>
+<script>
+	var bannerRun=document.getElementById('bannerRun');
+	var lis_pic=bannerRun.firstElementChild.getElementsByTagName('li');
+	// console.log(lis_pic);
+	var lis_num=document.getElementById('num').getElementsByTagName('li');
+	var left_btn=document.getElementById('left');
+	console.log(left_btn);
+	var right_btn=document.getElementById('right'); 
+	// console.log(lis_num);
+	console.log(right_btn);
+	//图片轮播
+	var i=0;
+	function lun(){
+			run=setInterval(function(){
+			// 图片与数字一一对应
+			//当前图片与数字
+			lis_pic[i].removeAttribute('class');
+			lis_num[i].removeAttribute('class');
+			++i;
+			
+			if(i==lis_pic.length){
+				i=0;
+			}
+			//下一张的图片与数字
+			// lis_pic[i].setAttribute('class','item');
+			// lis_num[i].setAttribute('class','num1');
+			lis_pic[i].className='item';
+			lis_num[i].className='num1';
+		},500);
+	}
+	lun();
+	console.log(i);
+	//图片的滑出滑入事件
+	for(var j=0;j<lis_pic.length;j++){
+		lis_pic[j].onmouseover=function(){
+			clearInterval(run);
+			left_btn.style.display='block';
+			right_btn.style.display='block';
+		}
+		lis_pic[j].onmouseout=function(){
+			lun();
+			left_btn.style.display='none';
+			right_btn.style.display='none';
+		}	
+	}
+	//右箭头的滑出滑入事件
+	right_btn.onmouseover=function(){
+			left_btn.style.display='block';
+			right_btn.style.display='block';
+			clearInterval(run);
+	}
+	right_btn.onmouseout=function(){
+			left_btn.style.display='none';
+			right_btn.style.display='none';
+			lun();
+	}
+	//右箭头点击事件
+	right_btn.onclick=function(){
+		lis_pic[i].className='';
+		lis_num[i].className='';
+		i++;
+		if(i==lis_pic.length){
+			i=0;
+		}
+		lis_pic[i].className='item';
+		lis_num[i].className='num1';
+	}
+	//左箭头的滑出滑入事件
+	left_btn.onmouseover=function(){
+			left_btn.style.display='block';
+			right_btn.style.display='block';
+			clearInterval(run);
+	}
+	left_btn.onmouseout=function(){
+			left_btn.style.display='none';
+			right_btn.style.display='none';
+			lun();
+	}
+	//左点击事件
+	left_btn.onclick=function(){
+		lis_pic[i].className='';
+		lis_num[i].className='';
+		i--;
+		if(i<0){
+			i=5;
+		}
+		lis_pic[i].className='item';
+		lis_num[i].className='num1';
+	}
+	console.log(i);
+	// 数字与图片对应 滑出滑入事件 
+	for(var k=0;k<lis_num.length;k++){
+		// 给span添加num属性,数字与图片对应
+		lis_num[k].firstElementChild.setAttribute('num',k);
+		console.log(lis_num[k]);
+		lis_num[k].onmouseover=function(){
+			clearInterval(run);
+			// 以前的图片和数字消失
+			lis_pic[i].className='';
+			lis_num[i].className='';
+			i=this.firstElementChild.getAttribute('num');
+			// console.log(i);
+			lis_pic[i].setAttribute('class','item');
+			lis_num[i].setAttribute('class','num1');
+			// this.setAttribute('class','num1');
+			// left_btn.style.display='block';
+			// right_btn.style.display='block';
+		}
+	}
+
+</script>
